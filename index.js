@@ -1,6 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { readContentFile } = require('./fileManager');
+const {
+  isValidEmail,
+  isValidPassword,
+} = require('./middlewares/validations');
 
 const app = express();
 app.use(bodyParser.json());
@@ -26,10 +30,12 @@ app.get('/talker/:id', async (request, response) => {
   return response.status(404).json({ message: 'Pessoa palestrante não encontrada' });
 });
 
-app.post('/login', (request, response) => {
+app.post('/login', isValidEmail, isValidPassword, (request, response) => {
   const { email, password } = request.body;
-  const randomStr = Math.random().toString(36).substring(2, 10) + Math.random().toString(36).substring(2, 10);
-  response.status(HTTP_OK_STATUS).json({ token: randomStr });
+  console.log(email);
+  console.log(password);
+  const rdStr = Math.random().toString(36).substring(2, 10) + Math.random().toString(36).substring(2, 10);
+  response.status(HTTP_OK_STATUS).json({ token: rdStr });
 });
 
 app.listen(PORT, () => {
