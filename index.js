@@ -23,7 +23,7 @@ app.get('/talker/:id', async (request, response) => {
   const { id } = request.params;
   const found = talkers.find((talker) => talker.id === Number(id));
   if (found) return response.status(HTTP_OK_STATUS).json(found);
-  return response.status(404).json({ message: "Pessoa palestrante não encontrada" });
+  return response.status(404).json({ message: 'Pessoa palestrante não encontrada' });
 });
 
 app.listen(PORT, () => {
