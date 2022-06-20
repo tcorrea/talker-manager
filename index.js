@@ -26,6 +26,12 @@ app.get('/talker/:id', async (request, response) => {
   return response.status(404).json({ message: 'Pessoa palestrante não encontrada' });
 });
 
+app.post('/login', (request, response) => {
+  const { email, password } = request.body;
+  const randomStr = Math.random().toString(36).substring(2, 10) + Math.random().toString(36).substring(2, 10);
+  response.status(HTTP_OK_STATUS).json({ token: randomStr });
+});
+
 app.listen(PORT, () => {
   console.log('Online');
 });
