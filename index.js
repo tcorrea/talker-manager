@@ -4,7 +4,11 @@ const { readContentFile, writeContentFile } = require('./fileManager');
 const {
   isValidEmail,
   isValidPassword,
-  isValidUser,
+  isValidName,
+  isValidAge,
+  isValidTalk,
+  isValidWatchedAt,
+  isValidRate,
   isValidToken,
 } = require('./middlewares/validations');
 
@@ -26,11 +30,20 @@ app.get('/talker', async (_request, response) => {
   response.status(HTTP_OK_STATUS).json(talkers);
 });
 
-app.post('/talker', isValidToken, isValidUser, async (request, response) => {
-  const talker = request.body;
-  await writeContentFile(talker);
-  return response.status(HTTP_OK_STATUS_201).json(talker);
-});
+app.post(
+  '/talker',
+  isValidToken,
+  isValidName,
+  isValidAge,
+  isValidTalk,
+  isValidWatchedAt,
+  isValidRate,
+  async (request, response) => {
+    const talker = request.body;
+    await writeContentFile(talker);
+    return response.status(HTTP_OK_STATUS_201).json(talker);
+  },
+);
 
 app.get('/talker/:id', async (request, response) => {
   const talkers = await readContentFile();
