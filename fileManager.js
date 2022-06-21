@@ -6,7 +6,6 @@ const readContentFile = async () =>
 const writeContentFile = async (data) => {
   const talkers = await readContentFile();
   // const test = { id: talkers.length + 1, ...data };
-  data.id = talkers.length + 1;
   talkers.push(data);
   await fs.writeFile('./talker.json', JSON.stringify(talkers));
 };
