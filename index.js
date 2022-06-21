@@ -5,7 +5,7 @@ const {
   isValidEmail,
   isValidPassword,
   isValidUser,
-  isValidToken
+  isValidToken,
 } = require('./middlewares/validations');
 
 const app = express();
@@ -37,14 +37,17 @@ app.get('/talker/:id', async (request, response) => {
   const { id } = request.params;
   const found = talkers.find((talker) => talker.id === Number(id));
   if (found) return response.status(HTTP_OK_STATUS).json(found);
-  return response.status(HTTP_NOT_FOUND_STATUS).json({ message: 'Pessoa palestrante não encontrada' });
+  return response
+    .status(HTTP_NOT_FOUND_STATUS)
+    .json({ message: 'Pessoa palestrante não encontrada' });
 });
 
 app.post('/login', isValidEmail, isValidPassword, (request, response) => {
   const { email, password } = request.body;
   console.log(email);
   console.log(password);
-  const rdStr = Math.random().toString(36).substring(2, 10) + Math.random().toString(36).substring(2, 10);
+  const rdStr = Math.random().toString(36).substring(2, 10)
+    + Math.random().toString(36).substring(2, 10);
   response.status(HTTP_OK_STATUS).json({ token: rdStr });
 });
 
