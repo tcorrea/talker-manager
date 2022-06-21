@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs/promises');
-const { readContentFile, writeContentFile } = require('./fileManager');
+const { readContentFile } = require('./fileManager');
 const {
   isValidEmail,
   isValidPassword,
