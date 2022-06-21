@@ -77,7 +77,7 @@ const isValidAge = (req, res, next) => {
 const isValidWatchedAt = (req, res, next) => {
   const { talk } = req.body;
   const { watchedAt } = talk;
-  const dateRegex = new RegExp(/^[0-9]{2}[\/][0-9]{2}[\/][0-9]{4}$/g);
+  const dateRegex = new RegExp(/^[0-9]{2}[\/][0-9]{2}[\/][0-9]{4}$/);
   if (!watchedAt) {
     return res
       .status(400)
@@ -112,22 +112,6 @@ const isValidTalk = (req, res, next) => {
   }
   next();
 };
-// const isValidUser = (req, res, next) => {
-//   const { name, age, talk } = req.body;
-//   // const nameNotAllowed = isValidName(name);
-//   // if (nameNotAllowed) return res.status(400).json(nameNotAllowed);
-//   // const ageNotAllowed = isValidAge(age);
-//   if (ageNotAllowed) return res.status(400).json(ageNotAllowed);
-//   if (!talk) {
-//     return res.status(400).json({ message: 'O campo "talk" é obrigatório' });
-//   }
-//   const { watchedAt, rate } = talk;
-//   const watchedAtNotAllowed = isValidWatchedAt(watchedAt);
-//   if (watchedAtNotAllowed) return res.status(400).json(watchedAtNotAllowed);
-//   const rateNotAllowed = isValidRate(rate);
-//   if (rateNotAllowed) return res.status(400).json(rateNotAllowed);
-//   next();
-// };
 
 module.exports = {
   isValidEmail,

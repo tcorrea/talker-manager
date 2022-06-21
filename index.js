@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const fs = require('fs/promises');
 const { readContentFile, writeContentFile } = require('./fileManager');
 const {
   isValidEmail,
@@ -40,7 +41,10 @@ app.post(
   isValidRate,
   async (request, response) => {
     const talker = request.body;
-    await writeContentFile(talker);
+    const talkers = JSON.parse(await fs.readFile('./talker.json'));
+    talker.id = talkers.length + 1;
+    const finalTalkers = [...talkers, talker];
+    await fs.writeFile('./talker.json', JSON.stringify(finalTalkers));
     return response.status(HTTP_OK_STATUS_201).json(talker);
   },
 );
