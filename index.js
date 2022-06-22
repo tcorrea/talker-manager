@@ -1,7 +1,5 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const fs = require('fs/promises');
-const { readContentFile } = require('./fileManager');
 const {
   isValidEmail,
   isValidPassword,
@@ -12,6 +10,14 @@ const {
   isValidRate,
   isValidToken,
 } = require('./middlewares/validations');
+
+const {
+  getAllTalkers,
+  getTalker,
+  addTalker,
+  editTalker,
+  // deleteTalker,
+} = require('./models/talkers');
 
 const app = express();
 app.use(bodyParser.json());
@@ -27,7 +33,7 @@ app.get('/', (_request, response) => {
 });
 
 app.get('/talker', async (_request, response) => {
-  const talkers = await readContentFile();
+  const talkers = await getAllTalkers();
   response.status(HTTP_OK_STATUS).json(talkers);
 });
 
@@ -41,23 +47,35 @@ app.post(
   isValidRate,
   async (request, response) => {
     const talker = request.body;
-    const talkers = JSON.parse(await fs.readFile('./talker.json'));
-    talker.id = talkers.length + 1;
-    const finalTalkers = [...talkers, talker];
-    await fs.writeFile('./talker.json', JSON.stringify(finalTalkers));
-    return response.status(HTTP_OK_STATUS_201).json(talker);
+    const addedTalker = await addTalker(talker);
+    return response.status(HTTP_OK_STATUS_201).json(addedTalker);
   },
 );
 
 app.get('/talker/:id', async (request, response) => {
-  const talkers = await readContentFile();
   const { id } = request.params;
-  const found = talkers.find((talker) => talker.id === Number(id));
+  const found = await getTalker(id);
   if (found) return response.status(HTTP_OK_STATUS).json(found);
   return response
     .status(HTTP_NOT_FOUND_STATUS)
     .json({ message: 'Pessoa palestrante não encontrada' });
 });
+
+app.put(
+  '/talker/:id',
+  isValidToken,
+  isValidName,
+  isValidAge,
+  isValidTalk,
+  isValidWatchedAt,
+  isValidRate,
+  async (request, response) => {
+    const { id } = request.params;
+    const talker = request.body;
+    const editedTalker = await editTalker(id, talker);
+    return response.status(HTTP_OK_STATUS).json(editedTalker);
+  },
+);
 
 app.post('/login', isValidEmail, isValidPassword, (request, response) => {
   const { email, password } = request.body;
