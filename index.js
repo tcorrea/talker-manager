@@ -16,7 +16,7 @@ const {
   getTalker,
   addTalker,
   editTalker,
-  // deleteTalker,
+  deleteTalker,
 } = require('./models/talkers');
 
 const app = express();
@@ -24,6 +24,7 @@ app.use(bodyParser.json());
 
 const HTTP_OK_STATUS = 200;
 const HTTP_OK_STATUS_201 = 201;
+const HTTP_OK_STATUS_204 = 204;
 const HTTP_NOT_FOUND_STATUS = 404;
 const PORT = '3000';
 
@@ -76,6 +77,12 @@ app.put(
     return response.status(HTTP_OK_STATUS).json(editedTalker);
   },
 );
+
+app.delete('/talker/:id', isValidToken, async (request, response) => {
+  const { id } = request.params;
+  const editedTalker = await deleteTalker(id);
+  return response.status(HTTP_OK_STATUS_204).json(editedTalker);
+});
 
 app.post('/login', isValidEmail, isValidPassword, (request, response) => {
   const { email, password } = request.body;
