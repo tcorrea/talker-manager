@@ -10,6 +10,11 @@ const getTalker = async (id) => {
   const talkers = await getAllTalkers();
   return talkers.find((talker) => talker.id === Number(id));
 };
+// get talker by query (name)
+const getTalkersByQuery = async (query) => {
+  const talkers = await getAllTalkers();
+  return talkers.filter((talker) => talker.name.includes(query));
+};
 
 // add talker
 const addTalker = async (talker) => {
@@ -49,4 +54,5 @@ module.exports = {
   addTalker,
   editTalker,
   deleteTalker,
+  getTalkersByQuery,
 };

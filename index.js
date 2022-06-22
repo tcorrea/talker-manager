@@ -17,6 +17,7 @@ const {
   addTalker,
   editTalker,
   deleteTalker,
+  getTalkersByQuery,
 } = require('./models/talkers');
 
 const app = express();
@@ -35,7 +36,21 @@ app.get('/', (_request, response) => {
 
 app.get('/talker', async (_request, response) => {
   const talkers = await getAllTalkers();
-  response.status(HTTP_OK_STATUS).json(talkers);
+  return response.status(HTTP_OK_STATUS).json(talkers);
+});
+
+app.get('/talker/search', isValidToken, async (request, response) => {
+  const { q } = request.query;
+  const result = await getTalkersByQuery(q);
+  if (!q) {
+    const talkers = await getAllTalkers();
+    return response.status(HTTP_OK_STATUS).json(talkers);
+  }
+
+  if (!result) return response.status(HTTP_OK_STATUS).json([]);
+
+  return response.status(HTTP_OK_STATUS).json(result);
+
 });
 
 app.post(
