@@ -50,7 +50,6 @@ app.get('/talker/search', isValidToken, async (request, response) => {
   if (!result) return response.status(HTTP_OK_STATUS).json([]);
 
   return response.status(HTTP_OK_STATUS).json(result);
-
 });
 
 app.post(
